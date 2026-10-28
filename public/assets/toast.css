@@ -1,0 +1,13 @@
+/* Bottom pop-up messages (same look as the "Auto Approve is ON" message): small, TWO at a time at most, newest at the bottom.
+   A new one springs up from below while the older one glides up (script); the oldest leaves by sliding up and fading out.
+   Enter/leave use transitions on opacity+transform only (no keyframes, no layout properties), so they cannot blink. */
+#gwToasts { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 3000; width: max-content; max-width: min(88vw, 300px);
+  display: flex; flex-direction: column; align-items: center; gap: 6px; pointer-events: none; }
+.toast { pointer-events: auto; width: fit-content; max-width: 100%; box-sizing: border-box; padding: 7px 13px; border-radius: 11px; text-align: left; overflow-wrap: anywhere;
+  background: #1d1a14; color: #f3ede0; border: 1px solid rgba(47,191,95,.45); box-shadow: 0 6px 18px rgba(0,0,0,.4); font: 12.5px/1.35 'IBM Plex Sans', system-ui, sans-serif;
+  opacity: 0; transform: translate3d(0, 16px, 0) scale(.94); transition: opacity .24s ease, transform .42s cubic-bezier(.2,.9,.3,1.25); will-change: opacity, transform; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.toast.in { opacity: 1; transform: none; }
+.toast.out { opacity: 0; transform: translate3d(0, -10px, 0) scale(.96); transition: opacity .22s ease, transform .26s ease-in; }
+.toast.pay { border-color: rgba(47,191,95,.7); }
+.toast.err { border-color: rgba(229,72,77,.6); }
+@media (prefers-reduced-motion: reduce) { .toast, .toast.out { transition: opacity .15s linear; transform: none; } }

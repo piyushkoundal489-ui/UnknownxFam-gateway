@@ -1,0 +1,77 @@
+:root { --p1:#c084fc; --p2:#7c3aed; --p3:#d946ef; --ink:#f3e8ff; --mute:#a78bca; }
+* { box-sizing:border-box; }
+html,body { margin:0; min-height:100%; }
+body { font-family:'IBM Plex Sans',system-ui,sans-serif; color:var(--ink); background:radial-gradient(1200px 600px at 50% -10%, #2a0a55 0%, #0a0216 55%, #050008 100%); padding:20px 14px 40px;
+       padding-top:calc(20px + env(safe-area-inset-top,0px)); padding-bottom:calc(40px + env(safe-area-inset-bottom,0px)); }
+.card { max-width:420px; margin:0 auto; text-align:center; }
+.logo { width:84px; height:84px; border-radius:22px; box-shadow:0 0 34px rgba(168,85,247,.55); object-fit:cover; }
+.payee { margin:14px 0 2px; color:var(--mute); font-size:14px; letter-spacing:.04em; }
+.amount { font-size:44px; font-weight:700; letter-spacing:-.02em; text-shadow:0 0 24px rgba(168,85,247,.6); }
+.status { display:inline-flex; align-items:center; gap:8px; margin:8px 0 18px; padding:6px 14px; border-radius:100px; font-size:13px; font-weight:600;
+          background:rgba(168,85,247,.14); border:1px solid rgba(168,85,247,.4); }
+.dot { width:9px; height:9px; border-radius:50%; background:var(--p1); box-shadow:0 0 10px var(--p1); animation:pulse 1.4s infinite; }
+@keyframes pulse { 50% { opacity:.35; } }
+.success .status { background:rgba(52,211,153,.14); border-color:rgba(52,211,153,.5); } .success .dot { background:#34d399; box-shadow:0 0 10px #34d399; animation:none; }
+.failed .status, .expired .status { background:rgba(244,63,94,.12); border-color:rgba(244,63,94,.45); } .failed .dot, .expired .dot { background:#fb7185; box-shadow:none; animation:none; }
+#qr { display:block; width:min(100%,340px); height:auto; margin:0 auto; border-radius:26px; }
+.success #qr, .failed #qr, .expired #qr, .review #qr { display:none; }
+.scan { margin:16px 0 4px; font-size:13px; letter-spacing:.3em; color:var(--mute); } .scan b { display:block; font-size:22px; letter-spacing:.05em; color:var(--ink); }
+.meta { margin:16px auto 0; font-size:13px; color:var(--mute); line-height:1.8; }
+.mono { font-family:'IBM Plex Mono',monospace; color:var(--ink); word-break:break-all; }
+.timer { font-family:'IBM Plex Mono',monospace; }
+.btn { margin-top:14px; display:inline-block; padding:10px 20px; border-radius:100px; border:1px solid rgba(168,85,247,.55); background:rgba(124,58,237,.25); color:var(--ink); font:600 13px 'IBM Plex Sans',sans-serif; cursor:pointer; text-decoration:none; }
+.btn:hover { background:rgba(124,58,237,.45); }
+.steps { text-align:left; margin:22px auto 0; padding:14px 18px 14px 34px; max-width:340px; font-size:13px; color:var(--mute); background:rgba(255,255,255,.03); border:1px solid rgba(168,85,247,.2); border-radius:14px; }
+.steps li { margin:4px 0; }
+.final { display:none; margin:6px auto 0; padding:20px; max-width:340px; border-radius:18px; border:1px solid rgba(168,85,247,.35); background:rgba(124,58,237,.12); font-size:15px; }
+.success .final.ok, .expired .final.exp, .failed .final.bad, .review .final.review { display:block; }
+.success .live, .expired .live, .failed .live, .review .live { display:none; }
+.review .status { background:rgba(250,204,21,.14); border-color:rgba(250,204,21,.45); } .review .dot { background:#facc15; box-shadow:0 0 10px #facc15; animation:pulse 1.4s infinite; }
+footer { margin-top:28px; font-size:12px; color:var(--mute); line-height:1.7; } footer b { color:var(--p1); font-weight:600; }
+
+.support-strip { display:flex; align-items:center; justify-content:center; gap:10px; width:fit-content; max-width:100%; margin:16px auto 0; padding:10px 18px 10px 10px;
+  border-radius:100px; text-decoration:none; color:var(--ink); font-size:14px; background:rgba(168,85,247,.18); border:1px solid rgba(192,132,252,.65); box-shadow:0 0 22px rgba(168,85,247,.35); }
+.support-strip b { color:var(--p1); }
+.support-strip .ss-ic { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; background:var(--p2); color:#fff; flex-shrink:0; }
+.support-strip .ss-ic svg { width:14px; height:14px; margin-left:-1px; }
+.support-strip.follow-strip { margin-top:8px; }
+.support-strip.follow-strip .ss-ic { background:none; border-radius:7px; overflow:hidden; }
+.support-strip.follow-strip .ss-ic img { width:100%; height:100%; display:block; }
+
+/* footer buttons: Support + Follow us on one line, "Designed By" centered under both */
+.support-row { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:7px; margin:16px auto 0; max-width:100%; }
+.support-row .support-strip { margin:0; font-size:11px; padding:4px 10px 4px 5px; gap:6px; }
+.support-row .support-strip .ss-ic { width:17px; height:17px; }
+.support-row .support-strip .ss-ic svg { width:9px; height:9px; }
+.support-row .ss-break { flex-basis:100%; height:0; }
+.support-row .designed-strip .ss-ic svg { margin-left:0; }
+@media (max-width:400px) { .support-row { gap:6px; } .support-row .support-strip { font-size:10px; padding:3px 8px 3px 4px; gap:5px; } .support-row .support-strip .ss-ic { width:15px; height:15px; } }
+
+.support-row .support-strip .ss-ic { position:relative; margin-right:5px; overflow:visible; }
+.support-row .support-strip .ss-ic::after { content:""; position:absolute; right:-6px; top:50%; width:1px; height:13px; transform:translateY(-50%); background:var(--p1); opacity:.8; }
+.support-row .follow-strip .ss-ic img { border-radius:5px; }
+
+/* simple click / tap animations (CSS only) */
+.btn, .support-strip { transition: transform .12s ease, background-color .2s ease, border-color .2s ease; -webkit-tap-highlight-color: transparent; }
+.btn:hover, .support-strip:hover { transform: translateY(-1px); }
+.btn:active, .support-strip:active { transform: scale(.96); }
+@keyframes payIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.card, main { animation: payIn .3s ease backwards; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+/* footer buttons, smaller still */
+.support-row { gap:6px; margin-top:12px; }
+.support-row .support-strip { font-size:10px; padding:3px 8px 3px 4px; gap:5px; }
+.support-row .support-strip .ss-ic { width:14px; height:14px; margin-right:9px; }
+.support-row .support-strip .ss-ic svg { width:8px; height:8px; }
+.support-row .support-strip .ss-ic::after { height:10px; right:-5px; }
+@media (max-width:400px) { .support-row { gap:5px; } .support-row .support-strip { font-size:9.5px; padding:2px 7px 2px 4px; gap:4px; } .support-row .support-strip .ss-ic { width:13px; height:13px; } }
+a.support-strip, button, .btn { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+
+/* ===== motion (light): button flash, payment result pop-in, QR appears ===== */
+@keyframes pop { 0% { opacity: 0; transform: scale(.9); } 60% { transform: scale(1.04); } 100% { opacity: 1; transform: none; } }
+.btn { position: relative; overflow: hidden; }
+.btn::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; opacity: 0; transform: scale(.4); background: radial-gradient(circle, rgba(255,255,255,.38) 0, rgba(255,255,255,0) 66%); transition: opacity .5s ease, transform .5s ease; }
+.btn:active::before { opacity: 1; transform: scale(1.7); transition-duration: .01s, .01s; }
+.final { animation: pop .5s ease backwards; }
+.scan { animation: payIn .5s .1s ease backwards; }

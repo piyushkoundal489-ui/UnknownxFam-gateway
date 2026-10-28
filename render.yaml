@@ -1,0 +1,68 @@
+# Render Blueprint: Web Service. In Render: New > Blueprint > pick this repo.
+# The PostgreSQL database is EXTERNAL (e.g. Aiven or Neon): set DATABASE_URL (and DATABASE_CA for Aiven) in the Render dashboard.
+# The plan is an example — a payment gateway should run on an always-on paid web plan (free web services sleep, which
+# would pause order expiry and Gmail reconciliation).
+services:
+  - type: web
+    name: unknownxfam-gateway
+    runtime: node
+    plan: starter
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: APP_ENV
+        value: production
+      - key: APP_URL
+        sync: false               # e.g. https://unknownxfam-gateway.onrender.com (or your custom domain)
+      - key: DATABASE_URL
+        sync: false               # SECRET: your PostgreSQL URI (Aiven/Neon), keep ?sslmode=require. Set in the Render dashboard only
+      - key: DATABASE_CA
+        sync: false               # Aiven: paste the whole "CA certificate" text (BEGIN/END lines included). Public cert, not a secret. Leave unset for Neon/Render
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ENCRYPTION_KEY
+        sync: false               # set once and keep it — migrating existing data requires the SAME key as before
+      - key: WEBHOOK_SECRET
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GMAIL_ALLOWED_SENDERS
+        value: no-reply@famapp.in
+      - key: GMAIL_PROVIDER_MAP
+        value: famapp.in:FamApp
+      - key: GMAIL_IDLE_POLL
+        value: "1"                # also refresh the FamPay balance of merchants with no open order
+      - key: GMAIL_POLL_SECONDS
+        value: "2"               # check Gmail every 2 s (live inbox listing) for merchants with an open order
+      - key: ALERT_TELEGRAM_CHAT_ID
+        value: "7642584056"      # Telegram user id that gets the "payment checking stopped" alerts (open the bot once and press Start). "off" disables
+      - key: GMAIL_REQUIRE_DKIM
+        value: "1"
+      - key: GMAIL_REQUIRE_REFERENCE
+        value: "1"
+      - key: EMAIL_DNS_CHECK
+        value: "1"
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false               # SECRET, set in the Render dashboard only (never in git): bot token from @BotFather. Enables the encrypted Telegram backup
+      - key: TELEGRAM_WEBHOOK_SECRET
+        sync: false               # SECRET: 32+ chars, letters/digits/_/- only. Lets the bot reply to /start (the app registers its own Telegram webhook with it)
+      - key: TELEGRAM_BACKUP_CHAT_ID
+        value: "-1004175182142"   # private backup channel (not a secret). The bot must be an ADMIN of this channel.
+      - key: BACKUP_PASSPHRASE
+        sync: false               # optional: 16+ chars that encrypt the backups; save it OUTSIDE Render. Defaults to ENCRYPTION_KEY
+      - key: BACKUP_INTERVAL_HOURS
+        value: "6"
+      - key: PBKDF2_ITERATIONS
+        value: "100000"

@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN shared_api_key_enc TEXT;

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UnknownXfam Gateway — Direct-to-UPI Payment API</title>
+<link rel="icon" type="image/webp" href="/assets/logo.webp">
+<meta name="description" content="Accept UPI payments straight to your own UPI ID — instant automatic verification, no middleman, no payout delays. Free to start, no code required.">
+<link rel="canonical" href="https://YOUR-DOMAIN.com/">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="UnknownXfam Gateway">
+<meta property="og:title" content="UnknownXfam Gateway — Direct-to-UPI Payment API">
+<meta property="og:description" content="Accept UPI payments straight to your own UPI ID — instant automatic verification, no middleman, no payout delays. Free to start, no code required.">
+<meta property="og:url" content="https://YOUR-DOMAIN.com/">
+<meta property="og:image" content="https://YOUR-DOMAIN.com/assets/logo.webp">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="UnknownXfam Gateway — Direct-to-UPI Payment API">
+<meta name="twitter:description" content="Accept UPI payments straight to your own UPI ID — instant automatic verification, no middleman, no payout delays. Free to start, no code required.">
+<meta name="twitter:image" content="https://YOUR-DOMAIN.com/assets/logo.webp">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "UnknownXfam Gateway",
+  "url": "https://YOUR-DOMAIN.com",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "description": "Accept UPI payments straight to your own UPI ID with instant automatic verification — no middleman, no payout delays.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "INR"
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-dash: #f4f2ec;
+    --surface: #ffffff;
+    --surface-2: #f6f4ee;
+    --line: #e7e3d8;
+    --gold: #a8681f;
+    --gold-tint: rgba(168,104,31,.10);
+    --teal: #12866c;
+    --teal-tint: rgba(18,134,108,.10);
+    --red: #b7364b;
+    --red-tint: rgba(183,54,75,.08);
+    --blue: #2f5f8f;
+    --blue-tint: rgba(47,95,143,.10);
+    --ink: #1c1a15;
+    --muted: #706a5c;
+    --radius: 18px;
+    --shadow: 0 1px 2px rgba(30,25,10,.04), 0 10px 28px rgba(30,25,10,.05);
+    --fs-h1: clamp(26px, 5vw, 38px); --fs-h2: 21px;
+    --fs-body: 15px; --fs-small: 13px; --fs-micro: 11.5px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif; line-height: 1.6; font-size: var(--fs-body);
+  }
+  body.dash { background: var(--bg-dash); }
+  a { color: inherit; }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 24px 90px; }
+  .wrap.narrow { max-width: 460px; }
+
+  /* -- Nav -- */
+  nav.topnav {
+    position: sticky; top: 0; z-index: 250;
+    background: var(--bg); border-bottom: 1px solid transparent;
+    max-width: 900px; margin: 0 auto; padding: 22px 24px 14px; display: flex;
+    align-items: center; justify-content: space-between; gap: 16px;
+  }
+  body.dash nav.topnav { background: var(--bg-dash); }
+  nav.topnav.is-stuck { border-bottom-color: var(--line); }
+  nav.topnav .brand {
+    font-family: 'Fraunces', serif; font-weight: 700; font-size: 22px; text-decoration: none; color: var(--ink);
+    display: flex; align-items: center; gap: 9px;
+  }
+  nav.topnav .brand span { color: var(--gold); }
+  .brand-mark {
+    width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0; overflow: hidden;
+    background: #0a0418;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 3px 10px rgba(110,50,220,.35);
+  }
+  .brand-mark img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  nav.topnav .links { display: flex; gap: 10px; align-items: center; flex-shrink: 0; }
+  nav.topnav .links a { text-decoration: none; font-size: var(--fs-small); }
+
+  /* -- Mobile: shrink brand + buttons so nothing overflows/gets cut off -- */
+  @media (max-width: 480px) {
+    nav.topnav { padding: 14px 14px 10px; gap: 6px; flex-wrap: nowrap; }
+    nav.topnav .brand { font-size: 18px; gap: 6px; }
+    .brand-mark { width: 38px; height: 38px; border-radius: 8px; }
+    nav.topnav .links { gap: 5px; }
+    nav.topnav .links .btn { padding: 7px 11px; font-size: 12px; white-space: nowrap; }
+  }
+  @media (max-width: 360px) {
+    nav.topnav .brand span { display: none; } /* just "UnknownXfam" + icon on very narrow phones */
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 10px 18px; border-radius: 100px; font-size: var(--fs-small); font-weight: 600;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+    text-decoration: none; cursor: pointer; font-family: inherit; transition: .15s;
+  }
+  .btn:hover { border-color: var(--gold); }
+  .btn.primary { background: var(--gold); color: #fff; border-color: var(--gold); }
+  .btn.primary:hover { opacity: .9; }
+  .btn.teal { background: var(--teal); color: #fff; border-color: var(--teal); }
+  .btn.danger { background: transparent; color: var(--red); border-color: rgba(183,54,75,.35); }
+  .btn.block { width: 100%; }
+  .btn.small { padding: 7px 13px; font-size: var(--fs-micro); }
+
+  h1 { font-family: 'Fraunces', serif; font-weight: 700; font-size: var(--fs-h1); margin: 0 0 12px; letter-spacing: -0.01em; line-height: 1.15; }
+  h2 { font-family: 'Fraunces', serif; font-weight: 700; font-size: var(--fs-h2); margin: 0 0 6px; }
+  .sub { color: var(--muted); font-size: 15px; margin: 0 0 24px; }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: var(--fs-micro); letter-spacing: .14em;
+    text-transform: uppercase; color: var(--gold); margin: 0 0 14px;
+  }
+  .hero { text-align: center; padding-bottom: 34px; }
+  .hero .sub { max-width: 46ch; margin-left: auto; margin-right: auto; }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 30px 28px; box-shadow: var(--shadow);
+  }
+  .card + .card { margin-top: 16px; }
+  body.dash .card { box-shadow: none; border-color: #ded9cb; }
+
+  /* -- Forms -- */
+  label { display: block; font-size: var(--fs-small); font-weight: 600; margin: 18px 0 6px; }
+  label:first-child { margin-top: 0; }
+  label .hint { font-weight: 400; color: var(--muted); font-size: var(--fs-micro); display: block; margin-top: 2px; }
+  input[type=text], input[type=password], input[type=number], input[type=email], input[type=file] {
+    width: 100%; background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px;
+    padding: 11px 13px; color: var(--ink); font-size: 14px; font-family: inherit;
+  }
+  input:focus { outline: none; border-color: var(--gold); }
+  form .actions { margin-top: 22px; }
+  .field-note { font-size: var(--fs-micro); color: var(--muted); margin-top: 5px; }
+
+  .alert { padding: 12px 15px; border-radius: 10px; font-size: var(--fs-small); margin-bottom: 16px; }
+  .alert.err { background: var(--red-tint); color: #8f2438; border: 1px solid rgba(183,54,75,.25); }
+  .alert.ok  { background: var(--teal-tint); color: #0b5f4c; border: 1px solid rgba(18,134,108,.25); }
+
+  code.mono, .mono { font-family: 'IBM Plex Mono', monospace; }
+  pre {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; background: var(--surface-2);
+    padding: 14px; border-radius: 10px; overflow-x: auto; color: #3c3a34; margin: 0;
+    border: 1px solid var(--line); line-height: 1.6; white-space: pre-wrap; word-break: break-all;
+  }
+
+  /* -- Dashboard bits -- */
+  .stat-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+  .stat {
+    min-width: 0; display: flex; align-items: center; gap: 14px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 16px 20px; overflow: hidden; transition: transform .15s, box-shadow .15s, border-color .15s;
+  }
+  body.dash .stat { box-shadow: none; border-color: #ded9cb; }
+  .stat:hover { transform: translateY(-2px); border-color: var(--gold); box-shadow: 0 8px 20px rgba(30,25,10,.06); }
+  .stat-icon {
+    width: 44px; height: 44px; border-radius: 13px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .stat-icon svg { width: 21px; height: 21px; }
+  .stat-icon .rupee { font-family: 'Fraunces', serif; font-weight: 700; font-size: 19px; line-height: 1; }
+  .stat-icon.gold { background: var(--gold-tint); color: var(--gold); }
+  .stat-icon.teal { background: var(--teal-tint); color: var(--teal); }
+  .stat-icon.blue { background: var(--blue-tint); color: var(--blue); }
+  .stat-icon.red  { background: var(--red-tint);  color: var(--red); }
+  .stat-body { min-width: 0; flex: 1; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .stat .lbl { font-size: var(--fs-micro); color: var(--muted); text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; }
+  .stat .val { font-family: 'Fraunces', serif; font-weight: 700; font-size: 20px; white-space: nowrap; }
+
+  table.orders { width: 100%; border-collapse: collapse; font-size: var(--fs-small); }
+  table.orders th { text-align: left; color: var(--muted); font-weight: 600; font-size: var(--fs-micro); text-transform: uppercase; letter-spacing: .05em; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  table.orders td { padding: 10px; border-bottom: 1px solid var(--line); }
+  table.orders tr:last-child td { border-bottom: none; }
+  .pill { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 600; }
+  .pill.credited { background: var(--teal-tint); color: var(--teal); }
+  .pill.pending  { background: var(--gold-tint); color: var(--gold); }
+  .pill.expired  { background: rgba(112,106,92,.12); color: var(--muted); }
+  .pill.duplicate { background: var(--red-tint); color: var(--red); }
+
+  .copybox { display: flex; gap: 8px; align-items: stretch; }
+  .copybox input { flex: 1; }
+
+  footer { margin-top: 50px; color: var(--muted); font-size: var(--fs-small); border-top: 1px solid var(--line); padding-top: 22px; text-align: center; }
+
+  /* -- API docs cards (used on landing + dashboard "API Docs" tab) -- */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  @media (max-width: 700px) { .cards { grid-template-columns: 1fr; } }
+  .cards .card { padding: 24px; }
+  .card .verb {
+    font-family: 'IBM Plex Mono', monospace; font-size: var(--fs-micro); color: var(--gold);
+    text-transform: uppercase; letter-spacing: .08em;
+  }
+  .card code.path {
+    display: block; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink);
+    background: var(--surface-2); padding: 10px 12px; border-radius: 9px; overflow-x: auto;
+    white-space: nowrap; margin-bottom: 12px; border: 1px solid var(--line);
+  }
+  .example-block { margin-top: 12px; }
+  .example-block .lbl {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .06em; margin-bottom: 7px;
+  }
+  .bonus-card p { color: var(--muted); font-size: var(--fs-small); margin: 0 0 12px; line-height: 1.55; }
+
+  /* -- Hamburger + drawer (dashboard only) -- */
+  .hamburger {
+    width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface);
+    display: flex; align-items: center; justify-content: center; cursor: pointer; flex-direction: column; gap: 4px;
+  }
+  .hamburger span { display: block; width: 16px; height: 2px; background: var(--ink); border-radius: 2px; }
+  .drawer-overlay {
+    position: fixed; inset: 0; background: rgba(20,17,10,.35); z-index: 300;
+    opacity: 0; pointer-events: none; transition: opacity .2s;
+  }
+  .drawer-overlay.open { opacity: 1; pointer-events: all; }
+  .drawer {
+    position: fixed; top: 0; left: 0; height: 100%; width: 260px; z-index: 400;
+    background: var(--surface); border-right: 1px solid var(--line);
+    transform: translateX(-100%); transition: transform .2s; display: flex; flex-direction: column;
+  }
+  .drawer.open { transform: translateX(0); }
+  .drawer-head { padding: 22px 20px 16px; border-bottom: 1px solid var(--line); flex-shrink: 0; }
+  .drawer-brand { font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; display: flex; align-items: center; gap: 8px; }
+  .drawer-brand .brand-mark { width: 28px; height: 28px; border-radius: 8px; }
+  .drawer-brand span { color: var(--gold); }
+  .drawer-sub { font-size: var(--fs-micro); color: var(--muted); margin-top: 3px; }
+  .plan-badge {
+    display: inline-block; margin-top: 8px; padding: 3px 11px; border-radius: 100px;
+    font-size: 10.5px; font-weight: 700; letter-spacing: .04em;
+  }
+  .plan-badge.is-premium { background: var(--gold-tint); color: var(--gold); }
+  .plan-badge.is-free { background: rgba(112,106,92,.12); color: var(--muted); }
+  .drawer-nav { flex: 1; padding: 12px 10px; overflow-y: auto; }
+  .drawer-item {
+    display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px;
+    color: var(--muted); text-decoration: none; font-size: var(--fs-small); font-weight: 500;
+    border: 1px solid transparent; margin-bottom: 3px;
+  }
+  .drawer-item .di-icon { font-size: 15px; width: 22px; text-align: center; flex-shrink: 0; }
+  .drawer-item:hover { background: var(--gold-tint); color: var(--ink); }
+  .drawer-item.active { background: var(--gold-tint); color: var(--gold); border-color: rgba(168,104,31,.25); font-weight: 600; }
+  .drawer-divider { height: 1px; background: var(--line); margin: 10px 14px; }
+  .drawer-foot { padding: 14px; border-top: 1px solid var(--line); flex-shrink: 0; }
+
+  /* -- API Key: golden ATM-card visual -- */
+  .atm-card {
+    position: relative; overflow: hidden;
+    aspect-ratio: 1.586 / 1; width: 100%; max-width: 400px; margin: 0 auto;
+    border-radius: 20px; padding: 22px 24px 18px;
+    background: linear-gradient(135deg, #f2cf8e 0%, #cd8f42 30%, #a8681f 60%, #7a4c14 100%);
+    color: #fff8ec; box-shadow: 0 16px 36px rgba(122,76,20,.38), inset 0 1px 0 rgba(255,255,255,.25);
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .atm-card::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(circle at 88% -15%, rgba(255,255,255,.38), transparent 55%),
+                repeating-linear-gradient(115deg, rgba(255,255,255,.05) 0 2px, transparent 2px 14px);
+  }
+  .atm-top, .atm-number, .atm-bottom { position: relative; z-index: 1; }
+  .atm-top { display: flex; align-items: center; justify-content: space-between; }
+  .atm-chip {
+    width: 40px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #fff4da, #e8c877); color: #8a5a1c;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.08);
+  }
+  .atm-chip svg { width: 22px; height: 22px; }
+  .atm-wave { color: rgba(255,255,255,.85); transform: rotate(90deg); }
+  .atm-wave svg { width: 20px; height: 20px; }
+  .atm-number { font-family: 'IBM Plex Mono', monospace; font-size: clamp(14px, 4.4vw, 19px); letter-spacing: .1em; word-break: break-all; }
+  .atm-bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; }
+  .atm-lbl { font-size: 9.5px; text-transform: uppercase; letter-spacing: .1em; opacity: .75; margin-bottom: 3px; }
+  .atm-val { font-size: 13px; font-weight: 600; letter-spacing: .02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px; }
+  .atm-brand { font-family: 'Fraunces', serif; font-weight: 700; font-size: 17px; opacity: .95; }
+</style>
+<meta name="theme-color" content="#ffffff">
+<script src="/assets/theme.js"></script>
+<link rel="stylesheet" href="/assets/theme.css">
+<script src="/assets/nopress.js" defer></script>
+<script src="/assets/motion.js" defer></script>
+</head>
+<body>
+<nav class="topnav">
+  <div class="brand">
+    <span class="brand-mark"><img src="/assets/logo.webp" alt="Gateway logo"></span>
+    <div class="brand-name">UnknownXfam <span>Gateway</span></div>
+  </div>
+  <div class="links">
+    <button type="button" class="theme-toggle" data-theme-toggle role="switch" aria-label="Dark theme" aria-checked="false"><svg class="tt-sun" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5" stroke="none"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" fill="none"/></svg><svg class="tt-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M14.5 3.2a8.6 8.6 0 1 0 6.3 12.9 7 7 0 0 1-6.3-12.9z"/><path d="M19.2 4.2l.6 1.4 1.4.6-1.4.6-.6 1.4-.6-1.4-1.4-.6 1.4-.6z"/></svg><span class="tt-knob"></span></button>
+          <a href="/login" class="btn small">Login</a>
+      <a href="/register" class="btn small primary">Get Started</a>
+      </div>
+</nav>
+<script src="/assets/app.js" defer></script>
+<div class="wrap">
+</div><!-- close the shared narrow .wrap: this page uses full-width bands with their own inner .wrap instead -->
+<style>
+  /* Landing-page-only additions on top of the shared theme */
+  .band { padding: 54px 0; }
+  .band.tint { background: var(--surface-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .band .wrap { padding-bottom: 0; }
+  .hero-band { padding: 50px 0 44px; }
+
+  .badge-row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px;
+    border-radius: 100px; font-size: var(--fs-small); font-weight: 500; border: 1px solid var(--line);
+    background: var(--surface); color: var(--ink); white-space: nowrap;
+  }
+  .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); flex: 0 0 auto; }
+  .hero-cta { display: flex; gap: 10px; justify-content: center; margin-top: 22px; flex-wrap: wrap; }
+
+  .section-head { text-align: center; max-width: 52ch; margin: 0 auto 32px; }
+  .section-note { color: var(--muted); font-size: var(--fs-small); margin: 6px 0 0; }
+
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 680px) { .steps { grid-template-columns: 1fr; } }
+  .step {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 26px 24px; display: flex; flex-direction: column; box-shadow: var(--shadow);
+  }
+  .step .n {
+    width: 30px; height: 30px; border-radius: 9px; background: var(--gold-tint); color: var(--gold);
+    display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: var(--fs-small);
+    font-family: 'IBM Plex Mono', monospace; margin-bottom: 16px; flex: 0 0 auto;
+  }
+  .step h3 { margin: 0 0 6px; font-size: 15.5px; font-weight: 600; }
+  .step p { margin: 0; color: var(--muted); font-size: var(--fs-small); line-height: 1.55; }
+
+  .trust-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 680px) { .trust-grid { grid-template-columns: 1fr; } }
+  .trust-item {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 22px 24px; display: flex; gap: 16px; align-items: flex-start; box-shadow: var(--shadow);
+  }
+  .trust-item .ico {
+    flex: 0 0 auto; width: 36px; height: 36px; border-radius: 10px; background: var(--teal-tint);
+    color: var(--teal); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700;
+  }
+  .trust-item h4 { margin: 0 0 4px; font-size: 15px; font-weight: 600; }
+  .trust-item p { margin: 0; color: var(--muted); font-size: var(--fs-small); line-height: 1.55; }
+
+  .cta-card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 40px 32px; text-align: center; box-shadow: var(--shadow);
+  }
+  .cta-card h2 { font-size: 24px; }
+  .cta-card .sub { max-width: 44ch; margin: 0 auto 22px; }
+</style>
+
+<div class="hero hero-band">
+  <p class="eyebrow">Multi-Merchant FamPay Payment API</p>
+  <h1>Accept FamPay payments,<br>straight to your own account.</h1>
+  <p class="sub">Connect your own UPI ID once and accept payments through FamPay. Every payment is verified automatically,
+     with its status updated to "Paid" when successfully confirmed — no manual checking, no unnecessary middleman, just seamless payment verification.</p>
+
+  <div class="badge-row">
+    <span class="badge"><span class="dot"></span> Direct to your UPI ID</span>
+    <span class="badge"><span class="dot"></span> Automatic verification</span>
+    <span class="badge"><span class="dot"></span> No KYC, no signup fee</span>
+  </div>
+
+  <div class="hero-cta">
+    <a href="/register" class="btn primary">Create free account</a>
+    <a href="/login" class="btn">Login</a>
+  </div>
+</div>
+
+<div class="band tint">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>How it works</h2>
+      <p class="section-note">Three steps — set up once, runs on its own after that.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="n">01</div>
+        <h3>Generate a QR</h3>
+        <p>Call one API endpoint with an amount, get back a UPI QR code for your customer to scan.</p>
+      </div>
+      <div class="step">
+        <div class="n">02</div>
+        <h3>Customer pays you directly</h3>
+        <p>Any UPI app works — GPay, PhonePe, Paytm, BHIM. Money reaches your own UPI ID instantly.</p>
+      </div>
+      <div class="step">
+        <div class="n">03</div>
+        <h3>Order confirmed automatically</h3>
+        <p>Within moments the order flips to "paid" on its own — you never have to manually confirm a payment.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="band">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Why merchants trust this</h2>
+      <p class="section-note">Built so you're always the one in control of your own money.</p>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-item">
+        <div class="ico">₹</div>
+        <div><h4>Money never passes through us</h4><p>Every QR pays your own UPI ID directly — we never hold or touch your funds.</p></div>
+      </div>
+      <div class="trust-item">
+        <div class="ico">⌗</div>
+        <div><h4>Isolated per merchant</h4><p>Your orders and personal API key are scoped to your account.</p></div>
+      </div>
+      <div class="trust-item">
+        <div class="ico">↺</div>
+        <div><h4>Full control, anytime</h4><p>Disconnect or reset your account access whenever you want, no questions asked.</p></div>
+      </div>
+      <div class="trust-item">
+        <div class="ico">⏱</div>
+        <div><h4>Orders auto-expire</h4><p>Unpaid QR codes expire after a few minutes, so stale orders never sit around waiting to be misused.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="band tint">
+  <div class="wrap">
+    <div class="cta-card">
+      <p class="eyebrow" style="margin-bottom:10px;">Ready when you are</p>
+      <h2>Your API key and full docs live in your dashboard</h2>
+      <p class="sub">Register free, add your UPI ID, and every endpoint — with your real key already filled in — is one click away.</p>
+      <div class="hero-cta">
+        <a href="/register" class="btn primary">Create free account</a>
+        <a href="/login" class="btn">I already have an account</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap" style="padding-top:40px;">
+  <footer>Self-hosted · direct-to-merchant UPI collection · no subscription, no middleman. · <a href="/privacy">Privacy Policy</a> · <a href="/terms">Terms</a></footer>
+<footer style="margin-top:50px;color:var(--muted,#706a5c);font-size:13px;border-top:1px solid var(--line,#e7e3d8);padding-top:22px;text-align:center;">
+  © 2026 UnknownXfam Gateway
+  <div class="support-row"><a class="support-strip" href="https://t.me/UnknownNvrDie" target="_blank" rel="noopener noreferrer"><span class="ss-ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.5 3.6 2.9 10.8c-1.3.5-1.2 1.3-.2 1.6l1.8 5.6c.2.6.4.8.9.8s.7-.2 1-.5l2.3-2.2 4.7 3.5c.9.5 1.5.2 1.7-.8L22.9 5c.3-1.2-.4-1.7-1.4-1.4zM9 13.6l9.3-5.9c.4-.3.8-.1.5.2l-7.6 6.9-.3 3.2z"/></svg></span><span>Support - <b>@UnknownNvrDie</b></span></a><a class="support-strip follow-strip" href="https://www.instagram.com/honoured_0ne?stkn=Nnc2aTd1NWZkczAz" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram"><span class="ss-ic"><img src="/assets/instagram.webp" alt="" width="20" height="20" loading="lazy"></span><span><b>Follow us</b></span></a><span class="ss-break"></span><a class="support-strip designed-strip" href="https://www.instagram.com/myslf_kavyaa?exln=bGpoZGRjNXA0YTFm" target="_blank" rel="noopener noreferrer"><span class="ss-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 5l-4 14"/></svg></span><span>Designed By</span></a></div>
+</footer>
+</div>
+</body>
+</html>

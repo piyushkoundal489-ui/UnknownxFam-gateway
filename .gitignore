@@ -1,0 +1,26 @@
+# secrets & local config
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+
+# dependencies / build
+node_modules/
+
+
+# databases
+*.sqlite
+*.sqlite3
+*.db
+migrations/*.sql.bak
+
+# logs / OS / editor cruft
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+coverage/
